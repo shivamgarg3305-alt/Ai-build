@@ -1,69 +1,75 @@
-# PAPPU visual design rule (permanent)
+# PAPPU design rule: strict black and white only (permanent)
 
-**Status: permanent product requirement.** This is not a theme, a preference or a setting. All future UI work must follow it. Recorded during F0; the existing screens have **not** been redesigned yet (see [Current compliance](#current-compliance)).
+**Status: permanent product requirement.** It applies to every existing and future screen, feature, component and interface of PAPPU. It is not a theme, a preference or a setting, and there is no dark mode. **No exception may be introduced without the owner's explicit approval.**
+
+Documenting this rule does not mean the existing screens comply. They do not yet; see [Current compliance](#current-compliance).
 
 ## The rule
 
-PAPPU uses a strictly monochrome visual design.
+The owner's requirement is **STRICT BLACK AND WHITE ONLY**.
 
-| Element | Requirement |
+- Backgrounds: pure white `#FFFFFF`.
+- Text: pure black `#000000`.
+- No other colours anywhere in PAPPU's application UI.
+- **No grey shades, including neutral greys.**
+- No coloured or grey text.
+- No coloured accents or highlights.
+- No gradients or tinted backgrounds.
+- No coloured or grey buttons.
+- No colourful icons.
+- No grey or coloured borders, dividers, separators, shadows or focus rings.
+- All icons, borders, dividers, buttons and controls use only pure black `#000000` and pure white `#FFFFFF`.
+- No dark mode.
+- No exceptions without explicit owner approval.
+
+The design must remain clean, minimal, premium, modern and professional, while keeping accessibility, readability, spacing, a clear visual hierarchy and clearly distinguishable interaction states, using only black and white.
+
+## Applying it
+
+**Only two values exist:** `#FFFFFF` and `#000000`. That includes CSS, SVG fills and strokes, canvas and WebGL output, the PWA manifest, `theme-color` and system UI colours. Transparency or opacity that blends black and white into a grey is not allowed (for example `rgba(0,0,0,0.5)` or `opacity: 0.6` on black elements). Browser and PWA chrome use `#FFFFFF`, and `color-scheme` is `light`.
+
+**Visual hierarchy** comes from size, weight, letter-case, spacing, alignment, rule thickness and layout. It never comes from lighter or grey text.
+
+**Interaction states** must be distinguishable using only black and white, and never by colour alone:
+
+| State | Black-and-white treatment |
 | --- | --- |
-| Background | Pure white `#FFFFFF` |
-| Text | Pure black `#000000`, every piece of text |
-| Other colours | **None anywhere in the application UI**: no coloured accents, gradients, tinted backgrounds, coloured buttons or colourful icons |
-| Borders, separators, icons, controls | Black, white, or neutral monochrome treatments only |
-| Character | Premium, minimal, modern, consistent, professional |
-| Accessibility | Readability, a clear visual hierarchy and usable interaction states are preserved |
+| Default control | `#000000` border (1px or more) on `#FFFFFF`, or solid `#000000` with `#FFFFFF` text for the primary action |
+| Hover | Inverted (`#000000` fill, `#FFFFFF` text) or a thicker `#000000` border |
+| Focus | Solid `#000000` outline of at least 2px, separated from the control by a `#FFFFFF` offset; never removed |
+| Active / pressed | Inverted, or a thicker border |
+| Selected / current | Inverted item or a solid `#000000` indicator bar, plus `aria-current` |
+| Disabled | Dashed `#000000` border, `not-allowed` cursor and an explicit text label such as "Unavailable"; announced to assistive technology. No greying out |
+| Error | Explicit wording ("Error: …"), a distinct black icon, thicker `#000000` border, `role="alert"` |
+| Success / warning / info | Distinct black icons plus wording |
+| Loading | `#000000` spinner or pattern, with text for screen readers |
 
-## How to apply it
+**Depth and separation** use `#000000` lines, solid black blocks or white space only. There are no shadows, glows or blurs. Motion stays subtle, and `prefers-reduced-motion` is respected.
 
-**Palette.** Only `#FFFFFF`, `#000000` and, for non-text elements, true neutral greys (equal red, green and blue values, for example `#E5E5E5`). Text is always `#000000`. Nothing with a hue, ever, including in SVGs, shadows and focus rings.
+**Icons** are drawn in `#000000` on `#FFFFFF`, or inverted. The approved PAPPU logo is black and white and is never recoloured or redesigned.
 
-**Hierarchy without grey text.** Secondary information is distinguished by size, weight, spacing, letter-case and layout, not by lighter text.
+## Not decided: no exception exists until the owner approves one
 
-**Interaction states** must stay distinguishable without colour (this is also a WCAG requirement: never rely on colour alone):
+These cases are **not** exempt. Each needs an explicit owner decision before any UI that shows it is built:
 
-| State | Monochrome treatment |
-| --- | --- |
-| Default control | Black 1px border on white, or solid black with white text for the primary action |
-| Hover | Inverted (black fill, white text) or a heavier border |
-| Focus | Visible black outline of at least 2px with a white offset; never removed |
-| Active / pressed | Inverted, or inset |
-| Selected / current | Solid black indicator or inverted item, plus `aria-current` |
-| Disabled | Dashed or lighter neutral border, `not-allowed` cursor and an explicit text label. Text stays black; the state is announced to assistive technology |
-| Error | Icon plus explicit wording ("Error: …"), heavier border, `role="alert"`. No red |
-| Success / warning / info | Distinct monochrome icons plus wording. No green, amber or blue |
-| Loading | Monochrome spinner or skeleton in neutral grey, with text for screen readers |
-
-**Contrast.** Text is black on white (21:1). Neutral greys used for meaningful non-text elements (control borders, icons, focus indicators) must keep at least 3:1 against white (`#949494` or darker); purely decorative separators may be lighter.
-
-**Icons and imagery.** Line or solid icons in black. The approved PAPPU logo is black and white and fits the rule; it is never recoloured.
-
-**Light only.** There is no dark mode: the background is always `#FFFFFF`. Browser and PWA chrome (`theme-color`, manifest `background_color` and `theme_color`) use `#FFFFFF`, and `color-scheme` is `light`.
-
-**Motion and depth.** Subtle and neutral: grey shadows only, no glows, no coloured blur. `prefers-reduced-motion` stays respected.
-
-## Open questions for the owner
-
-These need a decision before the affected UI is built:
-
-1. **Owner content.** Photos, screenshots and documents you upload contain colour. The proposal is to show them as they are, since they are your content and not UI, unless you want them shown in greyscale.
-2. **The approved 3D avatar.** If the approved character design contains colour, the avatar must be preserved exactly. That would be a deliberate exception to this rule, or the design is already monochrome. This is decided when the avatar files are supplied (decision D9).
-3. **Grey for non-text elements.** This document reads "neutral monochrome treatments" as allowing true neutral greys for borders, separators, control fills and shadows, but never for text. Confirm or tighten to black and white only.
+1. **Photographs, screenshots and other images the owner uploads.** No display treatment is approved yet.
+2. **The approved 3D avatar.** It must be preserved exactly. If its approved design is not purely black and white, how it is shown requires the owner's decision. Nothing is assumed (decision D9).
+3. **Illustrations or other visual content.** Not approved.
+4. **Browser rendering.** Font smoothing and anti-aliased edges are produced by the browser and operating system, not specified by PAPPU. Whether the design must also control them (for example by disabling font smoothing) is for the owner to decide. No setting has been assumed.
 
 ## Enforcement (planned)
 
-When the UI is migrated, a CI check will be added that scans `apps/web` styles, components, SVGs, the manifest and `index.html` for any colour value that is not `#FFFFFF`, `#000000` or a true neutral grey, and fails the build. It is not added in F0, because the current UI would fail it on every screen.
+When the UI is migrated, CI will fail the build if any colour value other than `#FFFFFF` or `#000000` (or the keywords `white` and `black`) appears in `apps/web` styles, components and SVGs, the manifest or `index.html`, or if grey-producing alpha or opacity values are used. It is not added yet, because the current UI would fail it on every screen.
 
 ## Current compliance
 
-**The current web UI does not comply.** It predates this rule. It was not redesigned in F0, by instruction.
+**The current web UI does not comply.** It predates this rule, and per the owner's instruction it has not been redesigned yet.
 
 | Location | Current state |
 | --- | --- |
-| `apps/web/src/styles.css` | Dark navy background `#080c16`, light text, amber accent `#f0b46c`, green success and red danger colours, translucent "glass" panels; `color-scheme: dark` |
+| `apps/web/src/styles.css` | Dark navy background `#080c16`, light and grey text, amber accent `#f0b46c`, green success and red danger colours, translucent "glass" panels and borders; `color-scheme: dark` |
 | `apps/web/index.html` | `theme-color` `#080c16`, `color-scheme` dark |
 | `apps/web/public/manifest.webmanifest` | `background_color` and `theme_color` `#080c16` |
 | `apps/web/public/icon.svg` | Amber glow on a dark square: a placeholder, not the approved logo |
 
-Migrating these is future UI work, to be done together with the approved logo assets.
+Migrating these is future UI work, done together with the approved logo assets.

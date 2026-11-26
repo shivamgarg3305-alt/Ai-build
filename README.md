@@ -19,11 +19,11 @@ apps/web  (React + Vite PWA shell)  ──HTTP──►  apps/api  (Hono, TypeSc
 packages/shared  Zod schemas and types used by both apps
 ```
 
-The app core (`createApp`) imports no Node- or Cloudflare-specific API; `apps/api/src/node.ts` and `apps/api/src/worker.ts` are thin entry points. Details: [docs/DESIGN.md](docs/DESIGN.md) (permanent monochrome UI rule), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/IDENTITY.md](docs/IDENTITY.md), [docs/AI_PROVIDER.md](docs/AI_PROVIDER.md), [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+The app core (`createApp`) imports no Node- or Cloudflare-specific API; `apps/api/src/node.ts` and `apps/api/src/worker.ts` are thin entry points. Details: [docs/DESIGN.md](docs/DESIGN.md) (permanent strict black-and-white UI rule), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/IDENTITY.md](docs/IDENTITY.md), [docs/AI_PROVIDER.md](docs/AI_PROVIDER.md), [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Design rule
 
-PAPPU's UI is permanently **strictly monochrome**: pure white `#FFFFFF` background, pure black `#000000` text, and no other colours. Borders, icons and controls are black, white or neutral monochrome only. This applies to all UI work; see [docs/DESIGN.md](docs/DESIGN.md). **The current screens predate the rule and do not comply yet** (dark background, amber accent); they will be migrated in a later UI stage.
+PAPPU's UI is permanently **strict black and white only**: pure white `#FFFFFF` backgrounds, pure black `#000000` text, and nothing else. There are no other colours and **no grey shades**: no coloured or grey text, accents, gradients, tinted backgrounds, buttons, borders, dividers, shadows or focus rings, and no dark mode. All icons, borders, buttons and controls are pure black or pure white. No exception may be introduced without the owner's explicit approval. This applies to every existing and future screen; see [docs/DESIGN.md](docs/DESIGN.md). **The current screens predate the rule and do not comply yet** (dark background, amber accent); they will be migrated in a later UI stage.
 
 ## Prerequisites
 
@@ -137,7 +137,7 @@ Tables in use today: `users`, `sessions`, `audit_logs`, `instruction_revisions`,
 3. **The session token is kept in `localStorage`** and there is no Content Security Policy yet.
 4. **First-registration claims ownership:** a freshly deployed instance must be registered by the owner immediately.
 5. **Expired sessions** are removed only when presented; jobs are not durable; only local file storage exists.
-6. **The UI does not yet follow the monochrome design rule** (docs/DESIGN.md).
+6. **The UI does not yet follow the strict black-and-white design rule** (docs/DESIGN.md).
 7. **PWA is partial** (no service worker, no PNG icons), and the UI has not been verified on real devices.
 8. **`node:sqlite` is experimental** in Node 22.
 9. **The health endpoint is public** and reports version and environment.
