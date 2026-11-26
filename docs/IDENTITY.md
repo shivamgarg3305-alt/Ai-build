@@ -71,7 +71,7 @@ The address term "Sir" is deliberately part of the permanent profile, not a sett
 
 ## What is and is not verified
 
-`npm test` runs 150 tests (100 added in Phase 2). `npm run eval -w @assistant/api` runs the behavior scenarios.
+`npm test` runs the whole suite (Phase 2 added 100 tests; see the README for how to run it). `npm run eval -w @assistant/api` runs the behavior scenarios.
 
 | Required check | What is verified | What is not |
 | --- | --- | --- |
@@ -113,8 +113,8 @@ Without an active provider, `npm run eval` prints that nothing was evaluated and
 ## Verification instructions
 
 ```bash
-npm install && npm run setup && npm run db:migrate
-npm run check                                  # typecheck + 150 tests + build
+npm ci && npm run setup && npm run db:migrate
+npm run check                                  # secret scan + typecheck + tests + build
 npm run eval -w @assistant/api                 # exits 2: no provider configured (expected)
 npm run assistant:lock -w @assistant/api       # idempotent: "unchanged" for every layer
 
