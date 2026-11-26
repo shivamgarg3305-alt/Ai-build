@@ -12,9 +12,11 @@
     "dev:web": "npm run dev -w @assistant/web",
     "db:migrate": "npm run db:migrate -w @assistant/api",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present && npm run test:scripts",
+    "test:scripts": "node --test scripts/check-secrets.test.mjs",
+    "secrets:scan": "node scripts/check-secrets.mjs",
     "build": "npm run build --workspaces --if-present",
-    "check": "npm run typecheck && npm test && npm run build"
+    "check": "npm run secrets:scan && npm run typecheck && npm test && npm run build"
   },
   "devDependencies": {
     "concurrently": "^9.0.0",

@@ -6,6 +6,7 @@
 2. **Everything external sits behind an interface** (`Database`, `ObjectStorage`, `AiProvider`, `JobQueue`) so a future phase adds an adapter instead of rewriting callers.
 3. **Secure and boring by default**: loopback bind, CORS allow-list, no secret defaults, validated config, generic 500s, redacted logs.
 4. **No fake functionality.** Where something does not exist, the code or UI says so (a 501 error, a disabled composer, an empty state).
+5. **Strict black-and-white UI (permanent).** Pure white `#FFFFFF` backgrounds and pure black `#000000` text, icons, borders, buttons and controls. No other colours, no grey shades, no shadows, no dark mode, and no exceptions without the owner's explicit approval. See [DESIGN.md](DESIGN.md).
 
 ## Components
 
@@ -19,7 +20,6 @@
 | Configuration | `apps/api/src/env.ts`, `load-env.ts` | Zod-validated env, typed `AppConfig` |
 | Logging / errors | `logger.ts`, `errors.ts`, `middleware/` | JSON-lines logs; `AppError` + one error handler |
 | Storage | `apps/api/src/storage/` | `ObjectStorage`; local FS implementation |
-| AI provider interface | `apps/api/src/ai/` | `AiProvider` + `AiProviderRegistry`; no provider yet |
 | Background jobs | `apps/api/src/jobs/` | `JobQueue`; in-process runner with retry |
 | Shared types/validation | `packages/shared` | Zod schemas used by API handlers and the web client |
 | Assistant identity and instructions | `apps/api/src/assistant/` | Six-layer instruction system; see [IDENTITY.md](IDENTITY.md) |
@@ -66,7 +66,7 @@ Layers 1 to 3 (identity, constitution, personality profile) are versioned source
 
 ## Frontend
 
-The app is gated by sign-in (existing auth API; the token is kept in `localStorage`). The Conversation screen talks to the engine through a small hook (`useConversation`) that keeps the thread in memory, marks a message `failed` rather than losing it, and sends the whole visible thread on each request. Mobile-first. One `<nav>` is a floating glass tab bar on phones and a left rail from 900px up. It respects iOS safe-area insets and `viewport-fit=cover`. A skip link, visible focus rings, `aria-current` on the active route, live regions for loading and error states, and `prefers-reduced-motion` support cover the accessibility basics. State screens use one shared `StatePanel`. The API client validates every response with the shared Zod schemas before use.
+The app is gated by sign-in (existing auth API; the token is kept in `localStorage`). The Conversation screen talks to the engine through a small hook (`useConversation`) that keeps the thread in memory, marks a message `failed` rather than losing it, and sends the whole visible thread on each request. Mobile-first. Note: the current visual style (dark glass, amber accent) predates the permanent strict black-and-white rule in [DESIGN.md](DESIGN.md) and must be migrated. One `<nav>` is a floating glass tab bar on phones and a left rail from 900px up. It respects iOS safe-area insets and `viewport-fit=cover`. A skip link, visible focus rings, `aria-current` on the active route, live regions for loading and error states, and `prefers-reduced-motion` support cover the accessibility basics. State screens use one shared `StatePanel`. The API client validates every response with the shared Zod schemas before use.
 
 ## Extension points for later phases
 
@@ -79,4 +79,12 @@ The app is gated by sign-in (existing auth API; the token is kept in `localStora
 | R2 attachments | Implement `ObjectStorage` over an R2 binding |
 | Proactive work | Implement `JobQueue` over Cron Triggers / Queues |
 | Permissions and actions | Tables exist; add a policy check in middleware before action execution |
-| Login UI | Use `authSessionResponseSchema` from `@assistant/shared`; API is ready |
+
+## Approved future design requirements (recorded in F0, not implemented)
+
+These requirements were approved during the PAPPU architecture review. They describe work for later stages (F5 data rights, F8 memory). **None of them is implemented yet.** They are recorded here so that the later stages are built to them.
+
+1. **Attachment-deletion decisions live in the independent deletion journal.** When an attachment is deleted and owner-confirmed or owner-stated memories depend on it, your per-memory decision (keep as your own attested statement, or delete the memory) must be stored *explicitly inside the deletion journal entry*: memory ids and decisions, no content. A reference to an audit record in the primary database is not enough, because restoring the primary database rewinds that audit record and the replay could no longer reproduce the decision.
+2. **The second D1 database is a separate database, not an independent backup.** The deletion journal is planned to live in its own D1 database so that restoring the primary database does not rewind it. That database is still in the same Cloudflare account, so it does not protect against losing or compromising the account. External copies of the journal, included in owner-held exports, remain necessary, and recovery takes the union of all copies.
+3. **Journal HMAC keys are versioned.** Every journal entry records the version of the key that signed it (`key_version`). Old key versions are kept, for verification only, so historical entries can still be verified after a rotation. A documented procedure must cover key rotation (new version for new entries, old versions retained), loss of a key (entries signed with it become unverifiable and must be reported, never silently trusted or dropped), and recovery. Replay refuses entries whose signature cannot be verified with a known key version.
+4. **Owner-stated memory requires server-side owner-session validation.** Inserting a memory with origin `owner_stated` (and every change to `owner_confirmed`) must be validated on the server against an authenticated, non-revoked session belonging to the same owner. A client-supplied flag must never be enough. Tests must reject an insert without a session, with another user's session, with a revoked session, and from the AI or tool layer.
