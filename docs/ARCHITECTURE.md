@@ -6,6 +6,7 @@
 2. **Everything external sits behind an interface** (`Database`, `ObjectStorage`, `AiProvider`, `JobQueue`) so a future phase adds an adapter instead of rewriting callers.
 3. **Secure and boring by default**: loopback bind, CORS allow-list, no secret defaults, validated config, generic 500s, redacted logs.
 4. **No fake functionality.** Where something does not exist, the code or UI says so (a 501 error, a disabled composer, an empty state).
+5. **Strictly monochrome UI (permanent).** White `#FFFFFF` background, black `#000000` text, no other colours. See [DESIGN.md](DESIGN.md).
 
 ## Components
 
@@ -65,7 +66,7 @@ Layers 1 to 3 (identity, constitution, personality profile) are versioned source
 
 ## Frontend
 
-The app is gated by sign-in (existing auth API; the token is kept in `localStorage`). The Conversation screen talks to the engine through a small hook (`useConversation`) that keeps the thread in memory, marks a message `failed` rather than losing it, and sends the whole visible thread on each request. Mobile-first. One `<nav>` is a floating glass tab bar on phones and a left rail from 900px up. It respects iOS safe-area insets and `viewport-fit=cover`. A skip link, visible focus rings, `aria-current` on the active route, live regions for loading and error states, and `prefers-reduced-motion` support cover the accessibility basics. State screens use one shared `StatePanel`. The API client validates every response with the shared Zod schemas before use.
+The app is gated by sign-in (existing auth API; the token is kept in `localStorage`). The Conversation screen talks to the engine through a small hook (`useConversation`) that keeps the thread in memory, marks a message `failed` rather than losing it, and sends the whole visible thread on each request. Mobile-first. Note: the current visual style (dark glass, amber accent) predates the permanent monochrome rule in [DESIGN.md](DESIGN.md) and must be migrated. One `<nav>` is a floating glass tab bar on phones and a left rail from 900px up. It respects iOS safe-area insets and `viewport-fit=cover`. A skip link, visible focus rings, `aria-current` on the active route, live regions for loading and error states, and `prefers-reduced-motion` support cover the accessibility basics. State screens use one shared `StatePanel`. The API client validates every response with the shared Zod schemas before use.
 
 ## Extension points for later phases
 
