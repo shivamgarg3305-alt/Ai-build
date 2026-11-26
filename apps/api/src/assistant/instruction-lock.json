@@ -1,0 +1,14 @@
+{
+  "identity": {
+    "version": "1.0.0",
+    "sha256": "c4a702422f49830198189e56c015629b022a8ba40c6d3e1df2fa5e4a54226cbd"
+  },
+  "constitution": {
+    "version": "1.0.0",
+    "sha256": "9d4a0b7cc16664db867397854cad1ccbfd1ae622e5af54b68c8ed45c03e36c50"
+  },
+  "personality": {
+    "version": "1.0.0",
+    "sha256": "2cb8838e3bd6a6b07ff41d44538c442f958d6ff80d6d6280eb426d31fb5815e1"
+  }
+}

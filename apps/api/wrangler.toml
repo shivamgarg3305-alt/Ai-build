@@ -1,0 +1,22 @@
+# Cloudflare Workers deployment config. See docs/DEPLOYMENT.md.
+name = "assistant-api"
+main = "src/worker.ts"
+compatibility_date = "2025-09-01"
+
+[vars]
+NODE_ENV = "production"
+LOG_LEVEL = "info"
+# Live AI is OFF unless the owner turns it on. See docs/AI_PROVIDER.md before enabling.
+AI_ENABLED = "false"
+# Secrets, set with `npx wrangler secret put <NAME>`: SESSION_SECRET, GEMINI_API_KEY
+# The owner also confirms the terms review: GEMINI_TERMS_REVIEWED = "true"
+# Set to your deployed web origin(s), comma-separated.
+CORS_ORIGINS = "https://assistant-web.pages.dev"
+# SESSION_SECRET is a secret, not a var: `npx wrangler secret put SESSION_SECRET`
+
+[[d1_databases]]
+binding = "DB"
+database_name = "assistant"
+# Fill in after `npx wrangler d1 create assistant` prints the id.
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+migrations_dir = "migrations"

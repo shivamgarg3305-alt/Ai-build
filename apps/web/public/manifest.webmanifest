@@ -1,0 +1,11 @@
+{
+  "name": "Assistant",
+  "short_name": "Assistant",
+  "description": "A lifelong personal assistant.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#080c16",
+  "theme_color": "#080c16",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

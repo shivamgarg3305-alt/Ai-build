@@ -1,0 +1,28 @@
+{
+  "name": "@assistant/api",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/node.ts",
+    "start": "node dist/node.js",
+    "db:migrate": "tsx src/db/migrate-cli.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "tsc --noEmit && esbuild src/node.ts --bundle --platform=node --format=esm --target=node22 --external:node:sqlite --outfile=dist/node.js",
+    "assistant:lock": "tsx scripts/lock-instructions.ts",
+    "eval": "tsx evals/cli.ts"
+  },
+  "dependencies": {
+    "@assistant/shared": "*",
+    "@hono/node-server": "^2.1.8",
+    "hono": "^4.6.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.0",
+    "vitest": "^4.0.0"
+  }
+}
